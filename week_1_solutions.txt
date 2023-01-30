@@ -1,0 +1,51 @@
+--Question 1
+iidfile string
+
+-- Question 3
+SELECT
+count(*)
+FROM green_taxi_trip_data
+WHERE lpep_pickup_datetime::date = '2019-01-15'
+
+ans (20689)
+
+
+--Question 4 Largest trip for each day
+
+SELECT
+DATE_TRUNC('DAY', lpep_pickup_datetime) as pickup_day,
+max(trip_distance) as max_distance
+ FROM green_taxi_trip_data
+ group by 1
+ order by max_distance desc;
+Ans(2019-01-15)
+
+--Question 5
+
+ SELECT
+ count(passenger_count) 
+ FROM green_taxi_trip_data
+ WHERE passenger_count=3 and lpep_pickup_datetime::date = '2019-01-01'
+ group by passenger_count;
+
+
+ SELECT
+ count(passenger_count) 
+ FROM green_taxi_trip_data
+ WHERE passenger_count=2 and lpep_pickup_datetime::date = '2019-01-01'
+ group by passenger_count;
+Ans= (2:1282, 3:254)
+
+--Question 6
+#This query was to find the max tip with Astoria as the pickup location
+SELECT max(g."tip_amount"), t."Zone" as zone
+FROM green_taxi_trip_data g JOIN taxi_zone t ON g."PULocationID" = t."LocationID"
+WHERE t."Zone" = 'Astoria'
+group by 2
+
+#while this query was used to isolate the maxtip for the pickup location and get the drop off location
+SELECT g."tip_amount", t."Zone" 
+FROM green_taxi_trip_data g JOIN taxi_zone t ON g."DOLocationID" = t."LocationID"
+WHERE tip_amount = 88;
+
+Ans(Long Island City/Queens Plaza)
